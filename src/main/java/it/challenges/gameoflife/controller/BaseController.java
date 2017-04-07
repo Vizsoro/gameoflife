@@ -11,6 +11,8 @@ public class BaseController {
 
 	private static int counter = 0;
 	private static final String VIEW_INDEX = "index";
+	private static final int BOARD_SIZE = 100;
+	private static final int CELL_SIZE = 5;
 	
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -20,6 +22,7 @@ public class BaseController {
 //		model.addAttribute("counter", ++counter);
 //		
 
+		model.addAttribute("BOARD_SIZE",BOARD_SIZE);
 		// Spring uses InternalResourceViewResolver and return back index.jsp
 		return VIEW_INDEX;
 

@@ -1,0 +1,14 @@
+
+table td {
+	height: 5px;
+	width: px;
+}
+
+table td .live {
+	background-color: green;
+}
+
+table td .dead {
+	background-color: grey;
+}
+
