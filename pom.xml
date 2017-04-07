@@ -51,7 +51,7 @@
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-beans</artifactId>
-		    <version>4.3.7.RELEASE</version>
+		    <version>${spring.version}</version>
 		</dependency>
 				
 		
@@ -102,6 +102,13 @@
 			<version>${slf4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>jcl-over-slf4j</artifactId> -->
+<!-- 			<version>${slf4j.version}</version> -->
+<!-- 			<scope>compile</scope> -->
+<!-- 		</dependency> -->
+
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
