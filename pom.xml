@@ -9,7 +9,7 @@
     <properties>
 
 		<!-- Generic properties -->
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
@@ -20,10 +20,7 @@
 		
 
 		<!-- Spring -->
-		<spring.version>3.2.3.RELEASE</spring.version>
-
-		<!-- Hibernate / JPA -->
-		<hibernate.version>4.2.1.Final</hibernate.version>
+		<spring.version>4.3.7.RELEASE</spring.version>
 
 		<!-- Logging -->
 		<logback.version>1.0.13</logback.version>
@@ -36,6 +33,12 @@
 	
 	<dependencies>
 	
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${spring.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -47,14 +50,11 @@
 			<artifactId>spring-web</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-beans</artifactId>
 		    <version>${spring.version}</version>
 		</dependency>
-				
-		
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
@@ -87,14 +87,6 @@
 			<version>${jsp.version}</version>
 			<scope>provided</scope>
 		</dependency>
-	
-		<!-- Spring and Transactions -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
 		<!-- Logging with SLF4J & LogBack -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -102,13 +94,6 @@
 			<version>${slf4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.slf4j</groupId> -->
-<!-- 			<artifactId>jcl-over-slf4j</artifactId> -->
-<!-- 			<version>${slf4j.version}</version> -->
-<!-- 			<scope>compile</scope> -->
-<!-- 		</dependency> -->
-
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -116,14 +101,6 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-
-		
 		<!-- Test Artifacts -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -166,8 +143,8 @@
 			<artifactId>maven-compiler-plugin</artifactId>
 			<version>2.3.2</version>
 			<configuration>
-				<source>${jdk.version}</source>
-				<target>${jdk.version}</target>
+				<source>${java.version}</source>
+				<target>${java.version}</target>
 			</configuration>
 		  </plugin>
 
