@@ -11,47 +11,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <title>Game of Life</title>
-<style type="text/css">
-table {
-	margin: auto;
-	border: 2px solid read;
-}
 
-table td {
-	height: 5px;
-	width: 5px;
-}
-
-.live-green {
-	background-color: green;
-}
-
-.live-blue {
-	background-color: blue;
-}
-
-.dead {
-	background-color: black;
-}
-
-.disabled {
-    pointer-events: none;
-    cursor: default;
-    opacity: 0.6;
-}
-
-footer {
-	margin-top: 20px;
-}
-
-textarea {
-   resize: none;
-}
-.btn-group-vertical{
-	margin-left: 40%;
-}
-
-</style>
 </head>
 <body>
 	<div class="container">
@@ -72,7 +32,7 @@ textarea {
 	</div>
 	<div class="row">
 		<div class="col-sm-4">
-			<div class="btn-group-vertical">
+			<div class="btn-group-horizontal">
 				<a href="/gameoflife/nextcycle" class="btn btn-default next">Next</a>
 				<a href="/gameoflife/previouscycle" class='btn btn-default previous
 						<c:if test="$!{previous}">
@@ -81,22 +41,22 @@ textarea {
 						'>Previous</a>
 				<a href="/gameoflife" class="btn btn-default restart">Restart</a>
 			</div>
-			<div>
+			<div class="details">
 				<div>
 					<span>The initial probability of a living cell :</span>  
-					<textarea disabled rows="1" cols="4">${probability }</textarea>
+					<p>${probability } </p>
 				</div>
 				<div>
 					<span>A living cell die if has more living neighbour than:</span>
-					<textarea disabled rows="1" cols="4">${dieUpper }</textarea>
+					<p> ${dieUpper } </p>
 				</div>
 				<div>
 					<span>A living cell die if has less living neighbour than:</span>
-					<textarea disabled rows="1" cols="4">${dieLower }</textarea>
+					<p> ${dieLower } </p>
 				</div>
 				<div>
 					<span>A died cell come alive when its neighbours:</span>
-					<textarea disabled rows="1" cols="4">${comeAlive }</textarea>
+					<p> ${comeAlive } </p>
 				</div>
 			</div>
 		</div>
