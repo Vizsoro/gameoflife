@@ -10,6 +10,16 @@ public class Cell {
 	private Position position;
 	private NeighbourInfo neighbourInfo;
 	
+	public Cell(){
+		
+	}
+	
+	public Cell(Cell cell){
+		this.state = cell.state;
+		this.color = cell.color;
+		this.position = cell.position;
+		this.neighbourInfo = new NeighbourInfo(cell.neighbourInfo);
+	}
 	
 	public CellState getState() {
 		return state;
@@ -43,6 +53,8 @@ public class Cell {
 	public CellColor getSurroundingColor(){
 		return neighbourInfo.getColor();
 	}
+	
+	
 	
 	
 }

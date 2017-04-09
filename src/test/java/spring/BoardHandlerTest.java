@@ -18,7 +18,7 @@ public class BoardHandlerTest {
 	
 	@Test
 	public void neighbourTest(){
-		boardHandler.generateBoard(4, 0.5);
+		boardHandler.saveBoard(boardHandler.generateBoard(4, 0.5));
 		List<Cell> neighbours = boardHandler.getNeighbours(new Position(0,0));
 		assertTrue(neighbours.get(0).getPosition().getX() == 0 && neighbours.get(0).getPosition().getY() == 1);
 		assertTrue(neighbours.get(7).getPosition().getX() == 1 && neighbours.get(7).getPosition().getY() == 3);

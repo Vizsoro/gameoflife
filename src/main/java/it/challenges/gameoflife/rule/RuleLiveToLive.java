@@ -11,9 +11,7 @@ public class RuleLiveToLive implements Rule {
 	}
 
 	public void apply(Cell cell) {
-		if (!CellState.LIVE.equals(cell.getState())) {
-			throw new RuntimeException("Wrong rule!");
-		} 
+		//no action needed
 	}
 
 }

@@ -22,10 +22,13 @@
 				</div>
 
 				<div class="col-sm-6">
-					<p>
+					<h1>
+						<c:out value="${error }" />
+					</h1>
+					<h2>
 						The current cycle of the game:
 						<c:out value="${currentCycle }"></c:out>
-					</p>
+					</h2>
 				</div>
 			</div>
 		</div>
@@ -34,33 +37,31 @@
 		<div class="col-sm-4">
 			<div class="btn-group-horizontal">
 				<a href="/gameoflife/nextcycle" class="btn btn-default next">Next</a>
-				<a href="/gameoflife/previouscycle" class='btn btn-default previous
-						<c:if test="$!{previous}">
-							disabled
-						</c:if>
-						'>Previous</a>
+				<c:if test="${previous}">
+					<a href="/gameoflife/previouscycle" class='btn btn-default previous'>Previous</a>
+				</c:if>
 				<a href="/gameoflife" class="btn btn-default restart">Restart</a>
 			</div>
 			<div class="details">
 				<div>
-					<span>The initial probability of a living cell :</span>  
-					<p>${probability } </p>
+					<span>The initial probability of a living cell :</span>
+					<p class="info">${probability }</p>
 				</div>
 				<div>
 					<span>A living cell die if has more living neighbour than:</span>
-					<p> ${dieUpper } </p>
+					<p class="info">${dieUpper }</p>
 				</div>
 				<div>
 					<span>A living cell die if has less living neighbour than:</span>
-					<p> ${dieLower } </p>
+					<p class="info">${dieLower }</p>
 				</div>
 				<div>
 					<span>A died cell come alive when its neighbours:</span>
-					<p> ${comeAlive } </p>
+					<p class="info">${comeAlive }</p>
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-8">		
+		<div class="col-sm-8">
 			<table>
 				<c:forEach items="${board}" var="row">
 					<tr>

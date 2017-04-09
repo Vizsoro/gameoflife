@@ -7,17 +7,19 @@ import org.springframework.stereotype.Component;
 
 public interface BoardHandler {
 	
-	public List<List<Cell>> getPreviousBoard();
+	List<List<Cell>> getPreviousBoard();
+	
+	void saveBoard(List<List<Cell>> board);
 
 	void setNeighbourInfo(Cell cell);
 	
-	public List<Cell> getNeighbours(Position position);
+	List<Cell> getNeighbours(Position position);
 	
 	List<List<Cell>> generateBoard(int size, double probability);
-	
-	void prepareForNextCycle();
+
+	void savePreviousBoard(List<List<Cell>> board);
 	
 	List<List<Cell>> getBoard();
 	
-	public NeighbourInfo findNeighbourInfo(Position position);
+	NeighbourInfo findNeighbourInfo(Position position);
 }

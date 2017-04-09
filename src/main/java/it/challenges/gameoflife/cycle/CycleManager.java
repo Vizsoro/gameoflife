@@ -1,5 +1,6 @@
 package it.challenges.gameoflife.cycle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -20,38 +21,48 @@ public class CycleManager implements CycleManagerInterface {
 	@Autowired
 	private RuleFactory ruleFactory;
 	
-	/* (non-Javadoc)
-	 * @see it.challenges.gameoflife.cycle.CycleManagerInterface#moveToNextCycle()
-	 */
 	@Override
 	public void moveToNextCycle(){	
-		
-		boardHandler.prepareForNextCycle();
 		
 		List<List<Cell>> board = boardHandler.getBoard();
 		
 		fillNeighbourInfo(board);
+
+		boardHandler.savePreviousBoard(createCopy(board));
 		
 		calculateCycle(board);
 				
 	}
 	
-	
-	
-	private void fillNeighbourInfo(List<List<Cell>> board){
+	private List<List<Cell>> createCopy(List<List<Cell>> board){
+		List<List<Cell>> copyBoard = new ArrayList<List<Cell>>();				
 		for(List<Cell> row : board){
-			row.parallelStream().forEach(new Consumer<Cell>() {
-				@Override
-				public void accept(Cell e) {
-					boardHandler.setNeighbourInfo(e);
-				}
-			});
-		}
-		
+			List<Cell> newRow = new ArrayList<Cell>();
+			for(Cell cell: row){
+				newRow.add(new Cell(cell));
+			}
+			copyBoard.add(newRow);
+		}		
+		return copyBoard;
 	}
 	
-	@Autowired
-	private void calculateCycle(List<List<Cell>> board){
+	
+	private void fillNeighbourInfo(final List<List<Cell>> board){
+		board.parallelStream().forEach(new Consumer<List<Cell>>(){
+			@Override
+			public void accept(List<Cell> row){
+				row.parallelStream().forEach(new Consumer<Cell>() {
+					@Override
+					public void accept(Cell e) {
+						boardHandler.setNeighbourInfo(e);
+					}
+				});
+			}				
+		});
+	}
+	
+	
+	private void calculateCycle(final List<List<Cell>> board){
 		for(List<Cell> row : board){
 			row.parallelStream().forEach(new Consumer<Cell>(){
 				@Override
@@ -67,6 +78,28 @@ public class CycleManager implements CycleManagerInterface {
 		for(Rule rule : rules){
 			rule.apply(cell);
 		}
+	}
+
+
+
+	@Override
+	public void moveToPreviousCycle() {
+		boardHandler.saveBoard(boardHandler.getPreviousBoard());
+		
+	}
+
+
+
+	@Override
+	public List<List<Cell>> getCurrentState() {
+		return boardHandler.getBoard();			
+	}
+
+
+
+	@Override
+	public void startGame(int size, double probability) {
+		boardHandler.saveBoard(boardHandler.generateBoard(size, probability));
 	}
 
 }

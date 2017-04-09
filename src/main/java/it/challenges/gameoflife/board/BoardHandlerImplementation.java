@@ -15,6 +15,7 @@ public class BoardHandlerImplementation implements BoardHandler {
 	private List<List<Cell>> board;
 	private List<List<Cell>> previousBoard;
 	private int boardSize;
+	private boolean previousBoardInitialized = false;
 
 	public List<List<Cell>> getPreviousBoard() {
 		return Collections.unmodifiableList(previousBoard);
@@ -65,9 +66,9 @@ public class BoardHandlerImplementation implements BoardHandler {
 	
 	public List<List<Cell>> generateBoard(int size, double probability){
 		this.boardSize = size;
-		List<List<Cell>> board = new ArrayList<List<Cell>>();
+		List<List<Cell>> board = new ArrayList<List<Cell>>(size);
 		for (int i = 0; i < size; i++){
-			List<Cell> row = new ArrayList<Cell>();
+			List<Cell> row = new ArrayList<Cell>(size);
 			for(int j = 0; j < size; j++){
 				Cell cell = new Cell();
 				cell.setPosition(new Position(i,j));
@@ -77,28 +78,29 @@ public class BoardHandlerImplementation implements BoardHandler {
 			}
 			board.add(row);
 		}
-		this.board = board;
+		//this.board = board;
 		return Collections.unmodifiableList(board);
 	}
 
 	public void saveBoard(List<List<Cell>> board) {
-		// TODO Auto-generated method stub
 		this.board = board;
 		
 	}
 
 	public List<List<Cell>> getBoard() {
-		// TODO Auto-generated method stub
 		return Collections.unmodifiableList(board);
 	}
 	
-	public void prepareForNextCycle(){
-		this.previousBoard = this.board;
-	}
 
 	public void setNeighbourInfo(Cell cell) {
 		cell.setNeighbourInfo(findNeighbourInfo(cell.getPosition()));
 		
+	}
+
+
+	@Override
+	public void savePreviousBoard(List<List<Cell>> board) {
+		this.previousBoard = board;		
 	}
 	
 }
