@@ -2,8 +2,6 @@ package it.challenges.gameoflife.board;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 
 public interface BoardHandler {
 	

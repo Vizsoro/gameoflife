@@ -15,7 +15,6 @@ public class BoardHandlerImplementation implements BoardHandler {
 	private List<List<Cell>> board;
 	private List<List<Cell>> previousBoard;
 	private int boardSize;
-	private boolean previousBoardInitialized = false;
 
 	public List<List<Cell>> getPreviousBoard() {
 		return Collections.unmodifiableList(previousBoard);
