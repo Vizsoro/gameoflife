@@ -15,87 +15,64 @@ import it.challenges.gameoflife.rule.RuleFactory;
 
 @Component
 public class CycleManager implements CycleManagerInterface {
-	
+
 	@Autowired
 	private BoardHandler boardHandler;
 	@Autowired
 	private RuleFactory ruleFactory;
-	
+
 	@Override
-	public void moveToNextCycle(){	
-		
+	public void moveToNextCycle() {
+
 		List<List<Cell>> board = boardHandler.getBoard();
-		
+
 		fillNeighbourInfo(board);
 
 		boardHandler.savePreviousBoard(createCopy(board));
-		
+
 		calculateCycle(board);
-				
+
 	}
-	
-	private List<List<Cell>> createCopy(List<List<Cell>> board){
-		List<List<Cell>> copyBoard = new ArrayList<List<Cell>>();				
-		for(List<Cell> row : board){
+
+	private List<List<Cell>> createCopy(List<List<Cell>> board) {
+		List<List<Cell>> copyBoard = new ArrayList<List<Cell>>();
+		for (List<Cell> row : board) {
 			List<Cell> newRow = new ArrayList<Cell>();
-			for(Cell cell: row){
+			for (Cell cell : row) {
 				newRow.add(new Cell(cell));
 			}
 			copyBoard.add(newRow);
-		}		
+		}
 		return copyBoard;
 	}
-	
-	
-	private void fillNeighbourInfo(final List<List<Cell>> board){
-		board.parallelStream().forEach(new Consumer<List<Cell>>(){
-			@Override
-			public void accept(List<Cell> row){
-				row.parallelStream().forEach(new Consumer<Cell>() {
-					@Override
-					public void accept(Cell e) {
-						boardHandler.setNeighbourInfo(e);
-					}
-				});
-			}				
-		});
+
+	private void fillNeighbourInfo(final List<List<Cell>> board) {
+		board.parallelStream()
+				.forEach((List<Cell> row) -> row.parallelStream().forEach(boardHandler::setNeighbourInfo));
 	}
-	
-	
-	private void calculateCycle(final List<List<Cell>> board){
-		for(List<Cell> row : board){
-			row.parallelStream().forEach(new Consumer<Cell>(){
-				@Override
-				public void accept(Cell e){
-					CycleManager.this.applyRules(e);
-				}
-			});
-		}
+
+	private void calculateCycle(final List<List<Cell>> board) {
+		board.parallelStream()
+				.forEach((List<Cell> row) -> row.parallelStream().forEach(CycleManager.this::applyRules));
 	}
-	
-	private void applyRules(Cell cell){
+
+	private void applyRules(Cell cell) {
 		Set<Rule> rules = ruleFactory.findRules(cell);
-		for(Rule rule : rules){
+		for (Rule rule : rules) {
 			rule.apply(cell);
 		}
 	}
 
-
-
 	@Override
 	public void moveToPreviousCycle() {
 		boardHandler.saveBoard(boardHandler.getPreviousBoard());
-		
+
 	}
-
-
 
 	@Override
 	public List<List<Cell>> getCurrentState() {
-		return boardHandler.getBoard();			
+		return boardHandler.getBoard();
 	}
-
-
 
 	@Override
 	public void startGame(int size, double probability) {
