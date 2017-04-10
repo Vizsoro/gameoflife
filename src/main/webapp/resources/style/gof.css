@@ -1,11 +1,13 @@
-p.info{
+p.info {
 	display: inline-block;
 }
 
 table {
-	margin: auto;
+	margin-left: 30%;
+	margin-top: 20px;
+	border : 2px solid #920707;
+	box-shadow: 16px -5px 5px #9c9393;
 	border: 2px solid #920707;
-    box-shadow: 16px -5px 5px #9c9393;
 }
 
 table td {
@@ -25,25 +27,20 @@ table td {
 	background-color: #423c3c;
 }
 
-.disabled {
-    pointer-events: none;
-    cursor: default;
-    opacity: 0.6;
-}
 
-textarea {
-   resize: none;
-}
-.btn-group-horizontal{
-	margin-left: 40%;
-	margin-bottom: 20px;
-}
-
-.footer{
+.footer {
 	margin-top: 20px;
 }
 
 .details {
-	margin-left: 105px;
 	margin-top: 50px;
+}
+
+.description {
+	margin-left: -25px;
+}
+
+div {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
