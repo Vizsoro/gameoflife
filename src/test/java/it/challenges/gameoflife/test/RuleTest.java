@@ -1,4 +1,4 @@
-package spring;
+package it.challenges.gameoflife.test;
 
 import static org.junit.Assert.*;
 

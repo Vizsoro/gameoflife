@@ -12,12 +12,11 @@ import it.challenges.gameoflife.pojo.CellState;
 @Component
 public class BoardHandlerImplementation implements BoardHandler {
 
-	private List<List<Cell>> board;
-	private List<List<Cell>> previousBoard;
-	private int boardSize;
+	private Board board;
+	private Board previousBoard;
 
 	public List<List<Cell>> getPreviousBoard() {
-		return Collections.unmodifiableList(previousBoard);
+		return previousBoard.getCells();
 	}
 
 	
@@ -44,27 +43,27 @@ public class BoardHandlerImplementation implements BoardHandler {
 	
 	public List<Cell> getNeighbours(Position position){
 		List<Cell> neighbours = new ArrayList<Cell>();
+		List<List<Cell>> cells = board.getCells();
 		int column = position.getY();
 		int row = position.getX();
-		int max = boardSize-1;
+		int max = board.getBoardSize()-1;
 		int nextColumn = column == max ? 0 : column + 1;
 		int previousColumn = column == 0 ? max : column-1;
 		int nextRow = row == max ? 0 : row + 1;
 		int previousRow = row == 0 ? max : row-1;
-		neighbours.add(board.get(row).get(nextColumn));
-		neighbours.add(board.get(row).get(previousColumn));
-		neighbours.add(board.get(previousRow).get(nextColumn));
-		neighbours.add(board.get(previousRow).get(column));
-		neighbours.add(board.get(previousRow).get(previousColumn));
-		neighbours.add(board.get(nextRow).get(nextColumn));
-		neighbours.add(board.get(nextRow).get(column));
-		neighbours.add(board.get(nextRow).get(previousColumn));
+		neighbours.add(cells.get(row).get(nextColumn));
+		neighbours.add(cells.get(row).get(previousColumn));
+		neighbours.add(cells.get(previousRow).get(nextColumn));
+		neighbours.add(cells.get(previousRow).get(column));
+		neighbours.add(cells.get(previousRow).get(previousColumn));
+		neighbours.add(cells.get(nextRow).get(nextColumn));
+		neighbours.add(cells.get(nextRow).get(column));
+		neighbours.add(cells.get(nextRow).get(previousColumn));
 		return Collections.unmodifiableList(neighbours);
 	}
 	
 	
 	public List<List<Cell>> generateBoard(int size, double probability){
-		this.boardSize = size;
 		List<List<Cell>> board = new ArrayList<List<Cell>>(size);
 		for (int i = 0; i < size; i++){
 			List<Cell> row = new ArrayList<Cell>(size);
@@ -77,17 +76,16 @@ public class BoardHandlerImplementation implements BoardHandler {
 			}
 			board.add(row);
 		}
-		//this.board = board;
 		return Collections.unmodifiableList(board);
 	}
 
-	public void saveBoard(List<List<Cell>> board) {
-		this.board = board;
+	public void saveBoard(List<List<Cell>> cells) {
+		this.board = new Board(cells);
 		
 	}
 
 	public List<List<Cell>> getBoard() {
-		return Collections.unmodifiableList(board);
+		return board.getCells();
 	}
 	
 
@@ -98,8 +96,8 @@ public class BoardHandlerImplementation implements BoardHandler {
 
 
 	@Override
-	public void savePreviousBoard(List<List<Cell>> board) {
-		this.previousBoard = board;		
+	public void savePreviousBoard(List<List<Cell>> cells) {
+		this.previousBoard =  new Board(cells);		
 	}
 	
 }
