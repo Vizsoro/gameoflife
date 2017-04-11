@@ -24,19 +24,10 @@ public class BoardHandlerTest {
 	public void neighbourTest(){
 		boardHandler.saveBoard(boardHandler.generateBoard(4, 0.5));
 		List<Cell> neighbours = boardHandler.getNeighbours(new Position(0,0));
-		
-		boolean neighbour1 = false;
-		boolean neighbour2 = false;
 		Position neighbour1Pos = new Position(0,1);
 		Position neighbour2Pos = new Position(1,3);
-		for(Cell cell : neighbours){
-			if(cell.equals(neighbour1Pos)){
-				neighbour1 = true;
-			} else if(cell.equals(neighbour2Pos)){
-				neighbour2 = true;
-			}
-		}
-		
+		boolean neighbour1 = neighbours.stream().anyMatch(c->c.equals(neighbour1Pos));
+		boolean neighbour2 = neighbours.stream().anyMatch(c->c.equals(neighbour2Pos));
 		assertTrue(neighbour1);
 		assertTrue(neighbour2);
 	}
