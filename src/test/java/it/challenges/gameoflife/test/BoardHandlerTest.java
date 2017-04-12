@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
 import it.challenges.gameoflife.board.Cell;
@@ -40,14 +41,12 @@ public class BoardHandlerTest {
 		cell.setColor(CellColor.BLUE);
 		cell.setState(CellState.DEAD);
 		row.add(cell);
-		List<List<Cell>> board = new ArrayList<List<Cell>>();
-		board.add(row);
-		boardHandler.saveBoard(board);
+		List<List<Cell>> cells = new ArrayList<List<Cell>>();
+		cells.add(row);
+		boardHandler.saveBoard(new Board(cells));
 		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0,0));
 		assertTrue(info.getColor().equals(CellColor.GREEN));
 		assertTrue(info.getLivingNeighbour() == 0);
 	}
-	
-	
-	
+		
 }

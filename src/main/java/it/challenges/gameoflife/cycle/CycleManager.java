@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.rule.Rule;
@@ -23,35 +24,23 @@ public class CycleManager implements CycleManagerInterface {
 	@Override
 	public void moveToNextCycle() {
 
-		List<List<Cell>> board = boardHandler.getBoard();
+		Board board = boardHandler.getBoard();
 
 		fillNeighbourInfo(board);
 
-		boardHandler.savePreviousBoard(createCopy(board));
+		boardHandler.savePreviousBoard(board.copy());
 
 		calculateCycle(board);
 
 	}
 
-	private List<List<Cell>> createCopy(List<List<Cell>> board) {
-		List<List<Cell>> copyBoard = new ArrayList<List<Cell>>();
-		for (List<Cell> row : board) {
-			List<Cell> newRow = new ArrayList<Cell>();
-			for (Cell cell : row) {
-				newRow.add(new Cell(cell));
-			}
-			copyBoard.add(newRow);
-		}
-		return copyBoard;
-	}
-
-	private void fillNeighbourInfo(final List<List<Cell>> board) {
-		board.parallelStream()
+	private void fillNeighbourInfo(final Board board) {
+		board.getCells().parallelStream()
 				.forEach((List<Cell> row) -> row.parallelStream().forEach(boardHandler::setNeighbourInfo));
 	}
 
-	private void calculateCycle(final List<List<Cell>> board) {
-		board.parallelStream()
+	private void calculateCycle(final Board board) {
+		board.getCells().parallelStream()
 				.forEach((List<Cell> row) -> row.parallelStream().forEach(CycleManager.this::applyRules));
 	}
 
@@ -70,7 +59,7 @@ public class CycleManager implements CycleManagerInterface {
 
 	@Override
 	public List<List<Cell>> getCurrentState() {
-		return boardHandler.getBoard();
+		return boardHandler.getBoard().getCells();
 	}
 
 	@Override

@@ -5,19 +5,19 @@ import java.util.List;
 
 public interface BoardHandler {
 	
-	List<List<Cell>> getPreviousBoard();
+	Board getPreviousBoard();
 	
-	void saveBoard(List<List<Cell>> board);
+	void saveBoard(Board board);
 
 	void setNeighbourInfo(Cell cell);
 	
 	List<Cell> getNeighbours(Position position);
 	
-	List<List<Cell>> generateBoard(int size, double probability);
+	Board generateBoard(int size, double probability);
 
-	void savePreviousBoard(List<List<Cell>> board);
+	void savePreviousBoard(Board board);
 	
-	List<List<Cell>> getBoard();
+	Board getBoard();
 	
 	NeighbourInfo findNeighbourInfo(Position position);
 }

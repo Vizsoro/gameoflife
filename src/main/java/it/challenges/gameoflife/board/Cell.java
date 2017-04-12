@@ -18,32 +18,38 @@ public class Cell {
 		this.state = cell.state;
 		this.color = cell.color;
 		this.position = cell.position;
-		this.neighbourInfo = new NeighbourInfo(cell.neighbourInfo);
+		if(cell.neighbourInfo != null){
+			this.neighbourInfo = new NeighbourInfo(cell.neighbourInfo);			
+		}
 	}
 	
 	public CellState getState() {
 		return state;
 	}
-	public void setState(CellState state) {
+	public Cell setState(CellState state) {
 		this.state = state;
+		return this;
 	}
 	public CellColor getColor() {
 		return color;
 	}
-	public void setColor(CellColor color) {
+	public Cell setColor(CellColor color) {
 		this.color = color;
+		return this;
 	}
 	public Position getPosition() {
 		return position;
 	}
-	public void setPosition(Position position) {
+	public Cell setPosition(Position position) {
 		this.position = position;
+		return this;
 	}
 	public NeighbourInfo getNeighbourInfo() {
 		return neighbourInfo;
 	}
-	public void setNeighbourInfo(NeighbourInfo neighbourInfo) {
+	public Cell setNeighbourInfo(NeighbourInfo neighbourInfo) {
 		this.neighbourInfo = neighbourInfo;
+		return this;
 	}
 	
 	public int getLivingNeighbours(){
