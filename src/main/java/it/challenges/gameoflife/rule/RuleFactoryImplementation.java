@@ -1,8 +1,11 @@
 package it.challenges.gameoflife.rule;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import it.challenges.gameoflife.board.Cell;
@@ -10,16 +13,9 @@ import it.challenges.gameoflife.board.Cell;
 @Component
 public class RuleFactoryImplementation implements RuleFactory{
 
-	
-	private final Set<Rule> allRule;
+	@Autowired
+	private final List<Rule> allRule = new ArrayList<Rule>();
 
-	
-	public RuleFactoryImplementation(){
-		allRule = new HashSet<Rule>();
-		allRule.add(new RuleDeadToLive());
-		allRule.add(new RuleLiveToLive());
-		allRule.add(new RuleLiveToDead());
-	}
 	
 	public Set<Rule> findRules(Cell cell) {
 		Set<Rule> rules = new HashSet<Rule>();

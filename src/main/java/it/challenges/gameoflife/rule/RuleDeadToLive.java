@@ -1,8 +1,11 @@
 package it.challenges.gameoflife.rule;
 
+import org.springframework.stereotype.Component;
+
 import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.pojo.CellState;
 
+@Component
 public class RuleDeadToLive implements Rule {
 
 	public boolean isAvaliable(Cell cell) {
