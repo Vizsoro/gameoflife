@@ -9,17 +9,17 @@ Given an infinite plane with cells.
 
 In every moment the cells have a transition simultaneously according to these rules:
 
-• Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-• Any live cell with two or three live neighbours lives on to the next generation.
-• Any live cell with more than three live neighbours dies, as if by over-population.
-• Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+- Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+- Any live cell with two or three live neighbours lives on to the next generation.
+- Any live cell with more than three live neighbours dies, as if by over-population.
+- Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
 Each cell has also a color.
 
-• For live cells there are two colors: green and blue. Dead cell can’t change it’s color.
-• Initial seed contains cells in both colors.
-• New cell color is calculated from majority of live neighbors colors.
-• Live cell can’t change it’s color.
+- For live cells there are two colors: green and blue. Dead cell can’t change it’s color.
+- Initial seed contains cells in both colors.
+- New cell color is calculated from majority of live neighbors colors.
+- Live cell can’t change it’s color.
 
 In the webapp the user can do the following actions:
 
