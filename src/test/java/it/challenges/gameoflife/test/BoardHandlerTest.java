@@ -3,7 +3,9 @@ package it.challenges.gameoflife.test;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -35,14 +37,12 @@ public class BoardHandlerTest {
 	
 	@Test
 	public void neighbourInfoTestOneCell(){
-		List<Cell> row = new ArrayList<>();
 		Cell cell = new Cell();
 		cell.setPosition(new Position(0,0));
 		cell.setColor(CellColor.BLUE);
 		cell.setState(CellState.DEAD);
-		row.add(cell);
-		List<List<Cell>> cells = new ArrayList<List<Cell>>();
-		cells.add(row);
+		Map<Position,Cell> cells = new HashMap<>();
+		cells.put(new Position(0,0), cell);
 		boardHandler.saveBoard(new Board(cells));
 		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0,0));
 		assertTrue(info.getColor().equals(CellColor.GREEN));

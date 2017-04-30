@@ -1,32 +1,33 @@
 package it.challenges.gameoflife.board;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.OptionalInt;
 
 public class Board {
 
-	private List<List<Cell>> cells;
+	private Map<Position,Cell> cells;
 	private int boardSize;
 	
-	public Board(List<List<Cell>> cells){
+	public Board(Map<Position,Cell> cells){	
 		checkCells(cells);
 		this.cells = cells;
-		this.boardSize = cells.size();
+		this.boardSize = (int) Math.sqrt(cells.size());
 	}
 	
-	private void checkCells(List<List<Cell>> cells){
-		int rowNum = cells.size();
-		for (List<Cell> row : cells){
-			if(row.size() != rowNum){
-				throw new IllegalArgumentException();
-			}
+	private void checkCells(Map<Position,Cell> cells){
+		OptionalInt maxX = cells.keySet().stream().mapToInt(Position::getX).max();
+		OptionalInt maxY = cells.keySet().stream().mapToInt(Position::getY).max();
+		if( !maxX.isPresent() || !maxY.isPresent() || maxY.getAsInt() != maxX.getAsInt()){
+			throw new IllegalArgumentException();
 		}
 		
+		
 	}
-
-	public List<List<Cell>> getCells() {
-		return Collections.unmodifiableList(cells);
+	public Map<Position,Cell> getCells() {
+		return Collections.unmodifiableMap(cells);
 	}
 
 	public int getBoardSize() {
@@ -34,15 +35,11 @@ public class Board {
 	}
 	
 	public Board copy(){
-		List<List<Cell>> copyBoard = new ArrayList<List<Cell>>();
-		for (List<Cell> row : cells) {
-			List<Cell> newRow = new ArrayList<Cell>();
-			for (Cell cell : row) {
-				newRow.add(new Cell(cell));
-			}
-			copyBoard.add(newRow);
+		Map<Position,Cell> copyCells = new HashMap<>();
+		for (Entry<Position, Cell> entry : cells.entrySet()) {
+			copyCells.put(entry.getKey(), new Cell(entry.getValue()));
 		}
-		return new Board(copyBoard);
+		return new Board(copyCells);
 		
 	}
 	

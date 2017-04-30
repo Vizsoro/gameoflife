@@ -2,7 +2,9 @@ package it.challenges.gameoflife.board;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -40,7 +42,7 @@ public class BoardHandlerImplementation implements BoardHandler {
 	@Override
 	public List<Cell> getNeighbours(Position position) {
 		List<Cell> neighbours = new ArrayList<Cell>();
-		List<List<Cell>> cells = board.getCells();
+		Map<Position,Cell> cells = board.getCells();
 		int column = position.getY();
 		int row = position.getX();
 		int max = board.getBoardSize() - 1;
@@ -48,30 +50,28 @@ public class BoardHandlerImplementation implements BoardHandler {
 		int previousColumn = column == 0 ? max : column - 1;
 		int nextRow = row == max ? 0 : row + 1;
 		int previousRow = row == 0 ? max : row - 1;
-		neighbours.add(cells.get(row).get(nextColumn));
-		neighbours.add(cells.get(row).get(previousColumn));
-		neighbours.add(cells.get(previousRow).get(nextColumn));
-		neighbours.add(cells.get(previousRow).get(column));
-		neighbours.add(cells.get(previousRow).get(previousColumn));
-		neighbours.add(cells.get(nextRow).get(nextColumn));
-		neighbours.add(cells.get(nextRow).get(column));
-		neighbours.add(cells.get(nextRow).get(previousColumn));
+		neighbours.add(cells.get(new Position(row,nextColumn))); 
+		neighbours.add(cells.get(new Position(row,previousColumn)));
+		neighbours.add(cells.get(new Position(previousRow,nextColumn)));
+		neighbours.add(cells.get(new Position(previousRow,column)));
+		neighbours.add(cells.get(new Position(previousRow,previousColumn)));
+		neighbours.add(cells.get(new Position(nextRow,nextColumn)));
+		neighbours.add(cells.get(new Position(nextRow,column)));
+		neighbours.add(cells.get(new Position(nextRow,previousColumn)));
 		return Collections.unmodifiableList(neighbours);
 	}
 
 	@Override
 	public Board generateBoard(int size, double probability) {
-		List<List<Cell>> board = new ArrayList<List<Cell>>(size);
-		for (int i = 0; i < size; i++) {
-			List<Cell> row = new ArrayList<Cell>(size);
+		Map<Position,Cell> board = new HashMap<>(size);
+		for (int i = 0; i < size; i++) {			
 			for (int j = 0; j < size; j++) {
 				Cell cell = new Cell();
 				cell.setPosition(new Position(i, j));
 				cell.setState(Math.random() > probability ? CellState.LIVE : CellState.DEAD);
 				cell.setColor(Math.random() > 0.5 ? CellColor.BLUE : CellColor.GREEN);
-				row.add(cell);
-			}
-			board.add(row);
+				board.put(cell.getPosition(), cell);
+			}			
 		}
 		return new Board(board);
 	}

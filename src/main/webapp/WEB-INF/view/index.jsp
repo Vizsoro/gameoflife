@@ -53,7 +53,7 @@
 				<table>
 					<c:forEach items="${board}" var="row">
 						<tr>
-							<c:forEach items="${row }" var="cell">
+							<c:forEach items="${row.value }" var="cell">
 								<td
 									class='<c:choose>
 									<c:when test="${cell.state eq 'LIVE'}">

@@ -1,6 +1,7 @@
 package it.challenges.gameoflife.cycle;
 
 import java.util.List;
+import java.util.Map;
 
 import it.challenges.gameoflife.board.Cell;
 
@@ -12,6 +13,6 @@ public interface CycleManagerInterface {
 	
 	void moveToPreviousCycle();
 	
-	List<List<Cell>> getCurrentState();
+	Map<Integer, List<Cell>> getCurrentState();
 
 }

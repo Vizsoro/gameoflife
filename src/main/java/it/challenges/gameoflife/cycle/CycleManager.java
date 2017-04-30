@@ -1,7 +1,10 @@
 package it.challenges.gameoflife.cycle;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,13 +37,13 @@ public class CycleManager implements CycleManagerInterface {
 	}
 
 	private void fillNeighbourInfo(final Board board) {
-		board.getCells().parallelStream()
-				.forEach((List<Cell> row) -> row.parallelStream().forEach(boardHandler::setNeighbourInfo));
+		board.getCells().values().parallelStream()
+				.forEach(boardHandler::setNeighbourInfo);
 	}
 
 	private void calculateCycle(final Board board) {
-		board.getCells().parallelStream()
-				.forEach((List<Cell> row) -> row.parallelStream().forEach(CycleManager.this::applyRules));
+		board.getCells().values().parallelStream()
+				.forEach(CycleManager.this::applyRules);
 	}
 
 	private void applyRules(Cell cell) {
@@ -57,8 +60,10 @@ public class CycleManager implements CycleManagerInterface {
 	}
 
 	@Override
-	public List<List<Cell>> getCurrentState() {
-		return boardHandler.getBoard().getCells();
+	public Map<Integer, List<Cell>> getCurrentState() {
+		Map<Integer, List<Cell>> collection = boardHandler.getBoard().getCells().values().parallelStream().collect(Collectors.groupingBy((Cell c)->{return c.getPosition().getX();}));
+		collection.forEach((k,v)->Collections.sort(v, (c1,c2)->c1.getPosition().getY() - c2.getPosition().getY()));
+		return collection;
 	}
 
 	@Override
