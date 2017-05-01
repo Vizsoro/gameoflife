@@ -69,6 +69,12 @@ public class CycleManager implements CycleManagerInterface {
 	@Override
 	public void startGame(int size, double probability) {
 		boardHandler.saveBoard(boardHandler.generateBoard(size, probability));
+		fillNeighbourInfo(boardHandler.getBoard());
 	}
 
+	public CycleManager(BoardHandler boardHandler, RuleFactory ruleFactory){
+		this.boardHandler = boardHandler;
+		this.ruleFactory = ruleFactory;
+	}
+	
 }

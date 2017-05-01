@@ -26,5 +26,9 @@ public class RuleFactoryImplementation implements RuleFactory{
 		}
 		return rules;
 	}
+	
+	public void addRule(Rule rule){
+		allRule.add(rule);
+	}
 
 }

@@ -20,33 +20,43 @@ import it.challenges.gameoflife.pojo.CellState;
 
 public class BoardHandlerTest {
 
-	
 	private BoardHandler boardHandler = new BoardHandlerImplementation();
-	
+
 	@Test
-	public void neighbourTest(){
+	public void neighbourTest() {
 		boardHandler.saveBoard(boardHandler.generateBoard(4, 0.5));
-		List<Cell> neighbours = boardHandler.getNeighbours(new Position(0,0));
-		Position neighbour1Pos = new Position(0,1);
-		Position neighbour2Pos = new Position(1,3);
-		boolean neighbour1 = neighbours.stream().anyMatch(c->c.equals(neighbour1Pos));
-		boolean neighbour2 = neighbours.stream().anyMatch(c->c.equals(neighbour2Pos));
+		List<Cell> neighbours = boardHandler.getNeighbours(new Position(0, 0));
+		Position neighbour1Pos = new Position(0, 1);
+		Position neighbour2Pos = new Position(1, 3);
+		boolean neighbour1 = neighbours.stream().anyMatch(c -> c.equals(neighbour1Pos));
+		boolean neighbour2 = neighbours.stream().anyMatch(c -> c.equals(neighbour2Pos));
 		assertTrue(neighbour1);
 		assertTrue(neighbour2);
 	}
-	
+
 	@Test
-	public void neighbourInfoTestOneCell(){
+	public void neighbourInfoTestOneCell() {
 		Cell cell = new Cell();
-		cell.setPosition(new Position(0,0));
+		cell.setPosition(new Position(0, 0));
 		cell.setColor(CellColor.BLUE);
 		cell.setState(CellState.DEAD);
-		Map<Position,Cell> cells = new HashMap<>();
-		cells.put(new Position(0,0), cell);
+		Map<Position, Cell> cells = new HashMap<>();
+		cells.put(new Position(0, 0), cell);
 		boardHandler.saveBoard(new Board(cells));
-		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0,0));
+		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0, 0));
 		assertTrue(info.getColor().equals(CellColor.GREEN));
 		assertTrue(info.getLivingNeighbour() == 0);
 	}
-		
+
+	@Test
+	public void zeroProbabilityTest() {
+		assertTrue(boardHandler.generateBoard(10, 0).getCells().values().parallelStream()
+				.allMatch(c -> CellState.LIVE.equals(c.getState())));
+	}
+	
+	@Test
+	public void oneProbabilityTest() {
+		assertTrue(boardHandler.generateBoard(10, 1).getCells().values().parallelStream()
+				.allMatch(c -> CellState.DEAD.equals(c.getState())));
+	}
 }

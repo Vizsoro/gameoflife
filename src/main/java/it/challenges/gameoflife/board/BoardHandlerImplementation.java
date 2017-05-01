@@ -68,7 +68,7 @@ public class BoardHandlerImplementation implements BoardHandler {
 			for (int j = 0; j < size; j++) {
 				Cell cell = new Cell();
 				cell.setPosition(new Position(i, j));
-				cell.setState(Math.random() > probability ? CellState.LIVE : CellState.DEAD);
+				cell.setState(Math.random() >= probability ? CellState.LIVE : CellState.DEAD);
 				cell.setColor(Math.random() > 0.5 ? CellColor.BLUE : CellColor.GREEN);
 				board.put(cell.getPosition(), cell);
 			}			
