@@ -57,4 +57,13 @@ public class BoardHandlerTest {
 		assertTrue(boardHandler.generateBoard(10, 1).getCells().values().parallelStream().flatMap(map->map.values().stream())
 				.allMatch(c -> CellState.DEAD.equals(c.getState())));
 	}
+	
+	@Test
+	public void livingNeighbourTest(){
+		boardHandler.saveBoard(boardHandler.generateBoard(4, 0));
+		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0,0));
+		assertTrue(info.getLivingNeighbour() == 8);
+		
+	}
+	
 }
