@@ -4,7 +4,6 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.database.BoardDAO;
 
 public class BoardDAOTest {

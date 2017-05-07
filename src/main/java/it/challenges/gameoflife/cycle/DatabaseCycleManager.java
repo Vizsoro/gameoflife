@@ -7,28 +7,30 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.Cell;
+import it.challenges.gameoflife.database.DatabaseHandler;
 import it.challenges.gameoflife.rule.Rule;
 import it.challenges.gameoflife.rule.RuleFactory;
 
-@Component
-public class CycleManager implements CycleManagerInterface {
-
+public class DatabaseCycleManager implements CycleManagerInterface {
 	@Autowired
 	private BoardHandler boardHandler;
 	@Autowired
 	private RuleFactory ruleFactory;
-	private boolean previous;
-
+	@Autowired
+	private DatabaseHandler databaseHandler;
+	
+	private int actualCycle;
+	private int maxCycle;
+	private int simulationId;
+	
+	
 	@Override
 	public void moveToNextCycle() {
 
-		previous = true;
-		
 		Board board = boardHandler.getBoard();
 
 		fillNeighbourInfo(board);
@@ -40,13 +42,13 @@ public class CycleManager implements CycleManagerInterface {
 	}
 
 	private void fillNeighbourInfo(final Board board) {
-		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
+		board.getCells().values().parallelStream()
 				.forEach(boardHandler::setNeighbourInfo);
 	}
 
 	private void calculateCycle(final Board board) {
-		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
-				.forEach(CycleManager.this::applyRules);
+		board.getCells().values().parallelStream()
+				.forEach(DatabaseCycleManager.this::applyRules);
 	}
 
 	private void applyRules(Cell cell) {
@@ -58,14 +60,15 @@ public class CycleManager implements CycleManagerInterface {
 
 	@Override
 	public void moveToPreviousCycle() {
-		previous = false;
 		boardHandler.saveBoard(boardHandler.getPreviousBoard());
 
 	}
 
 	@Override
-	public Map<Integer, Map<Integer, Cell>> getCurrentState() {
-		return boardHandler.getBoard().getCells();
+	public Map<Integer, List<Cell>> getCurrentState() {
+		Map<Integer, List<Cell>> collection = boardHandler.getBoard().getCells().values().parallelStream().collect(Collectors.groupingBy((Cell c)->{return c.getPosition().getX();}));
+		collection.forEach((k,v)->Collections.sort(v, (c1,c2)->c1.getPosition().getY() - c2.getPosition().getY()));
+		return collection;
 	}
 
 	@Override
@@ -74,14 +77,14 @@ public class CycleManager implements CycleManagerInterface {
 		fillNeighbourInfo(boardHandler.getBoard());
 	}
 
-	public CycleManager(BoardHandler boardHandler, RuleFactory ruleFactory){
+	public DatabaseCycleManager(BoardHandler boardHandler, RuleFactory ruleFactory){
 		this.boardHandler = boardHandler;
 		this.ruleFactory = ruleFactory;
 	}
 
 	@Override
 	public boolean previousEnable() {
-		return previous;
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
 }

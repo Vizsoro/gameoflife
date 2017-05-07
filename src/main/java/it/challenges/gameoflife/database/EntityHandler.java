@@ -5,13 +5,17 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.springframework.stereotype.Service;
+import org.springframework.core.GenericTypeResolver;
 
-@Service
-public class SimulationDAO {
-	private SessionFactory factory;
 
-	public SimulationDAO() {
+class EntityHandler<E extends GameOfLifeEntity> {
+
+	private final SessionFactory factory;
+	private final Class<E> typeParameterClass;
+	
+	@SuppressWarnings("unchecked")
+	public EntityHandler(){
+		this.typeParameterClass = (Class<E>) GenericTypeResolver.resolveTypeArgument(getClass(), EntityHandler.class);
 		try {
 			factory = new Configuration().configure().buildSessionFactory();
 		} catch (Throwable ex) {
@@ -20,44 +24,7 @@ public class SimulationDAO {
 		}
 	}
 
-	public SimulationEntity findById(int id) {
-		SimulationEntity simulationEntity = null;
-		Session session = factory.openSession();
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-			simulationEntity = (SimulationEntity) session.get(SimulationEntity.class, id);
-		} catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return simulationEntity;
-	}
-
-	public int saveSimulation(SimulationEntity entity) {
-		Session session = factory.openSession();
-		Transaction tx = null;
-		Integer entityID = null;
-		try {
-			tx = session.beginTransaction();
-			entityID = (Integer) session.save(entity);
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return entityID;
-	}
-	
-	public int saveSimulation(String name){
-		SimulationEntity entity = new SimulationEntity();
-		entity.setName(name);
+	public int save(E entity) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		Integer entityID = null;
@@ -75,12 +42,30 @@ public class SimulationDAO {
 		return entityID;
 	}
 
-	public void deleteSimulation(int id) {
+	public E findById(int id) {
+		E entity = null;
+
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			SimulationEntity entity = (SimulationEntity) session.get(SimulationEntity.class, id);
+			entity = (E) session.get(typeParameterClass, id);
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return entity;
+	}
+
+	public void delete(int id){
+		Session session = factory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			E entity = (E) session.get(typeParameterClass, id);
 			session.delete(entity);
 			tx.commit();
 		} catch (HibernateException e) {
@@ -91,5 +76,19 @@ public class SimulationDAO {
 			session.close();
 		}
 	}
-
+	
+	public void update(E entity){
+		Session session = factory.openSession();
+	      Transaction tx = null;
+	      try{
+	         tx = session.beginTransaction();
+			 session.update(entity); 
+	         tx.commit();
+	      }catch (HibernateException e) {
+	         if (tx!=null) tx.rollback();
+	         e.printStackTrace(); 
+	      }finally {
+	         session.close(); 
+	      }
+	}
 }

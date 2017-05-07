@@ -7,10 +7,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="simulation")
-public class SimulationEntity {
+public class SimulationEntity extends GameOfLifeEntity {
 
 	@Id
-//	@GeneratedValue
 	private int id;
 	
 	@Column

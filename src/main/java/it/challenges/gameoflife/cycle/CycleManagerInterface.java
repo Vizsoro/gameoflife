@@ -14,5 +14,7 @@ public interface CycleManagerInterface {
 	void moveToPreviousCycle();
 	
 	Map<Integer, Map<Integer, Cell>> getCurrentState();
+	
+	boolean previousEnable();
 
 }
