@@ -10,8 +10,8 @@ public class BoardDAO {
 
 	public BoardEntity findById(int id) {
 		EntityManager entityManager = Persistence.createEntityManagerFactory("jpa").createEntityManager();
-		Object singleResult = entityManager.createNativeQuery("SELECT * FROM board WHERE ID = 1 ").getSingleResult();
-		return (BoardEntity) singleResult;
+		BoardEntity singleResult = (BoardEntity) entityManager.createNativeQuery("SELECT * FROM board WHERE IDBOARD = 1 ", BoardEntity.class).getSingleResult();
+		return singleResult;
 	}
 
 }

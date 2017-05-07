@@ -78,15 +78,15 @@ public class CycleManagerTest {
 	@Test
 	public void deadToLiveTest() {
 		cycleManager.startGame(10, 0.5);
-		Optional<Cell> liveCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
+		Optional<Cell> deadCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
 				.filter(c -> CellState.DEAD.equals(c.getState())
 						&& c.getLivingNeighbours() == 3)
 				.findAny();
 
-		if (liveCell.isPresent()) {
+		if (deadCell.isPresent()) {
 			cycleManager.moveToNextCycle();
-			int x = liveCell.get().getPosX();
-			int y = liveCell.get().getPosY();
+			int x = deadCell.get().getPosX();
+			int y = deadCell.get().getPosY();
 			assertTrue(cycleManager.getCurrentState().get(x).get(y).getState()
 					.equals(CellState.LIVE));
 		}
