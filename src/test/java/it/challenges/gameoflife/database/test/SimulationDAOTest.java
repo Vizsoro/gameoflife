@@ -23,8 +23,7 @@ public class SimulationDAOTest {
 		SimulationDAO dao = new SimulationDAO();
 		SimulationEntity entity = new SimulationEntity();
 		entity.setName("második teszt");
-		dao.saveSimulation(entity);
-		
+		dao.saveSimulation(entity);		
 	}
 	
 }

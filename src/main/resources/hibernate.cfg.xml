@@ -25,6 +25,6 @@
 <!--    <mapping resource="SimulationEntity.hbm.xml"/> -->
    <mapping class="it.challenges.gameoflife.database.SimulationEntity"/>
    <mapping class="it.challenges.gameoflife.database.BoardEntity"/>
-
+   <mapping class="it.challenges.gameoflife.database.CellEntity"/>
 </session-factory>
 </hibernate-configuration>

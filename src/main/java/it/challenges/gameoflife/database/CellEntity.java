@@ -2,9 +2,13 @@ package it.challenges.gameoflife.database;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import it.challenges.gameoflife.board.Cell;
+import it.challenges.gameoflife.board.Position;
 import it.challenges.gameoflife.pojo.CellColor;
 import it.challenges.gameoflife.pojo.CellState;
 
@@ -13,6 +17,8 @@ import it.challenges.gameoflife.pojo.CellState;
 public class CellEntity extends GameOfLifeEntity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false, nullable = false)
 	private int id;
 	
 	@Column
@@ -32,61 +38,79 @@ public class CellEntity extends GameOfLifeEntity {
 	
 	@Column
 	private CellColor cellColor;
+	
+	public CellEntity(){
+		
+	}
+	
+	public CellEntity(Position position, Cell cell){
+		this.positionX = position.getX();
+		this.positionY = position.getY();
+		this.cellState = cell.getState();
+		this.cellColor = cell.getColor();
+	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public CellEntity setId(int id) {
 		this.id = id;
+		return this;
 	}
 
 	public int getSimulationId() {
 		return simulationId;
 	}
 
-	public void setSimulationId(int simulationId) {
+	public CellEntity setSimulationId(int simulationId) {
 		this.simulationId = simulationId;
+		return this;
 	}
 
 	public int getPositionX() {
 		return positionX;
 	}
 
-	public void setPositionX(int positionX) {
+	public CellEntity setPositionX(int positionX) {
 		this.positionX = positionX;
+		return this;
 	}
 
 	public int getPositionY() {
 		return positionY;
 	}
 
-	public void setPositionY(int positionY) {
+	public CellEntity setPositionY(int positionY) {
 		this.positionY = positionY;
+		return this;
 	}
 
 	public int getCycle() {
 		return cycle;
 	}
 
-	public void setCycle(int cycle) {
+	public CellEntity setCycle(int cycle) {
 		this.cycle = cycle;
+		return this;
 	}
 
 	public CellState getCellState() {
 		return cellState;
 	}
 
-	public void setCellState(CellState cellState) {
+	public CellEntity setCellState(CellState cellState) {
 		this.cellState = cellState;
+		return this;
 	}
 
 	public CellColor getCellColor() {
 		return cellColor;
 	}
 
-	public void setCellColor(CellColor cellColor) {
+	public CellEntity setCellColor(CellColor cellColor) {
 		this.cellColor = cellColor;
+		return this;
 	}
 	
 	
