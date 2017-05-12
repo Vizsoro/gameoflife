@@ -5,8 +5,10 @@
 <hibernate-configuration>
    <session-factory>
    <property name="hibernate.dialect">
-      org.hibernate.dialect.MySQLDialect
+      org.hibernate.dialect.MySQL5Dialect
    </property>
+<!-- 	<property name="dialect">org.hibernate.dialect.H2Dialect</property> -->
+	<property name="hibernate.hbm2ddl.auto">update</property>
    <property name="hibernate.connection.driver_class">
       com.mysql.jdbc.Driver
    </property>
@@ -21,10 +23,7 @@
       admin
    </property>
 
-   <!-- List of XML mapping files -->
-<!--    <mapping resource="SimulationEntity.hbm.xml"/> -->
-   <mapping class="it.challenges.gameoflife.database.SimulationEntity"/>
-   <mapping class="it.challenges.gameoflife.database.BoardEntity"/>
    <mapping class="it.challenges.gameoflife.database.CellEntity"/>
+   <mapping class="it.challenges.gameoflife.database.CycleEntity"/>
 </session-factory>
 </hibernate-configuration>

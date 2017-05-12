@@ -14,23 +14,18 @@ class EntityHandler<E extends GameOfLifeEntity> {
 	private final Class<E> typeParameterClass;
 	
 	@SuppressWarnings("unchecked")
-	public EntityHandler(){
+	public EntityHandler(SessionFactory factory){
 		this.typeParameterClass = (Class<E>) GenericTypeResolver.resolveTypeArgument(getClass(), EntityHandler.class);
-		try {
-			factory = new Configuration().configure().buildSessionFactory();
-		} catch (Throwable ex) {
-			ex.printStackTrace(System.out);
-			throw ex;
-		}
+		this.factory = factory;
 	}
 
-	public int save(E entity) {
+	public long save(E entity) {
 		Session session = factory.openSession();
 		Transaction tx = null;
-		Integer entityID = null;
+		long entityID = -1;
 		try {
 			tx = session.beginTransaction();
-			entityID = (Integer) session.save(entity);
+			entityID = (Long) session.save(entity);
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)

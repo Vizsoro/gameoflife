@@ -133,7 +133,13 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.hsqldb/hsqldb -->
+		<dependency>
+		    <groupId>org.hsqldb</groupId>
+		    <artifactId>hsqldb</artifactId>
+		    <version>2.3.4</version>
+            <scope>test</scope>
+		</dependency>		
 
 	</dependencies>	
 	

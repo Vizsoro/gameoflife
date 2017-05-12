@@ -4,15 +4,14 @@ import it.challenges.gameoflife.pojo.CellColor;
 import it.challenges.gameoflife.pojo.CellState;
 
 public class Cell {
-
+	
 	private CellState state;
 	private CellColor color;
 	private int posX;
 	private int posY;
 	private NeighbourInfo neighbourInfo;
 	
-	public Cell(){
-		
+	public Cell(){		
 	}
 	
 	public Cell(Cell cell){

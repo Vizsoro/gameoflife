@@ -1,36 +1,43 @@
 package it.challenges.gameoflife.database;
 
-import java.time.Instant;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Service;
 
 import it.challenges.gameoflife.board.Board;
-import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 
 @Service
 public class DatabaseHandler {
 
-	private EntityHandler<SimulationEntity> simulationHandler;
-	private EntityHandler<BoardEntity> boardHandler;
 	private EntityHandler<CellEntity> cellHandler;
+	
+	private SessionFactory factory;
 
 	public DatabaseHandler() {
-		simulationHandler = new SimulationDAO();
-		boardHandler = new BoardDAO();
-		cellHandler = new CellDAO();
+		try {
+			factory = new Configuration().configure().buildSessionFactory();
+		} catch (Throwable ex) {
+			ex.printStackTrace(System.out);
+			throw ex;
+		}
 	}
-
-	public int saveNewSimulation(Board board) {
-		SimulationEntity simulation = new SimulationEntity();
-		simulation.setName(Instant.now().toString());
-		int simulationId = simulationHandler.save(simulation);
-		boardHandler.save(new BoardEntity().setSimulationId(simulationId).setSize(board.getBoardSize()));
-		board.getCells().entrySet().parallelStream().map((entry)-> new CellEntity(entry.getKey(),entry.getValue()))
-				.forEach(cell->cellHandler.save(cell.setCycle(0).setSimulationId(simulationId)));
-		
-		return simulationId;
+	
+	public DatabaseHandler(Configuration config){
+		try {
+			factory = config.buildSessionFactory();
+		} catch (Throwable ex) {
+			ex.printStackTrace(System.out);
+			throw ex;
+		}
+	}
+	
+	public long saveCycle(int cycle, Board board){
+		List<CellEntity> cellEntities = board.getCells().values().parallelStream().map(CellEntity::new).collect(Collectors.toList());
+		CycleEntity cycleEntity = new CycleEntity().setCellEntities(cellEntities).setCycle(cycle);
+		return new CycleDAO(factory).save(cycleEntity);		
 	}
 
 }

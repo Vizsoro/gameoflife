@@ -28,7 +28,7 @@ public class CycleManager implements CycleManagerInterface {
 	public void moveToNextCycle() {
 
 		previous = true;
-		
+
 		Board board = boardHandler.getBoard();
 
 		fillNeighbourInfo(board);
@@ -74,7 +74,7 @@ public class CycleManager implements CycleManagerInterface {
 		fillNeighbourInfo(boardHandler.getBoard());
 	}
 
-	public CycleManager(BoardHandler boardHandler, RuleFactory ruleFactory){
+	public CycleManager(BoardHandler boardHandler, RuleFactory ruleFactory) {
 		this.boardHandler = boardHandler;
 		this.ruleFactory = ruleFactory;
 	}
@@ -83,5 +83,5 @@ public class CycleManager implements CycleManagerInterface {
 	public boolean previousEnable() {
 		return previous;
 	}
-	
+
 }
