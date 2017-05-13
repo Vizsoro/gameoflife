@@ -1,14 +1,14 @@
 package it.challenges.gameoflife.database.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.Assert.assertNull;
 import java.io.File;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
@@ -16,6 +16,8 @@ import org.springframework.test.annotation.Rollback;
 import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
+import it.challenges.gameoflife.board.Cell;
+import it.challenges.gameoflife.board.Position;
 import it.challenges.gameoflife.database.DatabaseHandler;
 
 @Transactional
@@ -23,11 +25,10 @@ public class DatabaseHandlerTest {
 
 	private DatabaseHandler handler;
 	private BoardHandler boardHandler;
-	private Configuration config;
 	
 	@Before
 	public void init(){
-		config = new Configuration().configure(new File("src/test/hibernate/hibernate.cfg.xml"));
+		Configuration config = new Configuration().configure(new File("src/test/hibernate/hibernate.cfg.xml"));
 		handler = new DatabaseHandler(config);
 		boardHandler = new BoardHandlerImplementation();
 	}
@@ -42,9 +43,29 @@ public class DatabaseHandlerTest {
 		assertTrue(id > -1);
 	}
 	
-	@After
-	public void clearDataBase(){
-		Session session = config.buildSessionFactory().openSession();
-		
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testFindByCycle(){
+		Board board = boardHandler.generateBoard(10, 0.5);
+		Map<Position, Cell> originalCells = board.getCells();
+		handler.saveCycle(4, board);
+		Map<Position, Cell> loadedMap = handler.getCycle(4);
+		assertNotNull(loadedMap);
+		assertTrue(loadedMap.values().parallelStream().allMatch(c->originalCells.get(c.getPosition()).equals(c)));
 	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testCycleClear(){
+		Board board = boardHandler.generateBoard(10, 0.5);
+		Map<Position, Cell> originalCells = board.getCells();
+		handler.saveCycle(1, board);
+		handler.saveCycle(2, board);
+		handler.clearCycles();
+		assertNull(handler.getCycle(4));
+		assertNull(handler.getCycle(3));
+	}
+	
 }

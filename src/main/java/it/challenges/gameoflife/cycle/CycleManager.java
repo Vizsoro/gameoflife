@@ -15,7 +15,7 @@ import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.rule.Rule;
 import it.challenges.gameoflife.rule.RuleFactory;
 
-@Component
+//@Component
 public class CycleManager implements CycleManagerInterface {
 
 	@Autowired

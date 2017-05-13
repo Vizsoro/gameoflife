@@ -46,12 +46,12 @@ public class BaseController {
 	@RequestMapping(value = "/nextcycle", method = RequestMethod.GET)
 	public String nextCycle(ModelMap model){
 		fillWithConstants(model);
-		model.addAttribute("previous", true);
 		try{
 			cycleManager.moveToNextCycle();
 			model.addAttribute("board", cycleManager.getCurrentState());
 			cycle++;
 			model.addAttribute("currentCycle",cycle);
+			model.addAttribute("previous", cycleManager.previousEnable());
 		} catch(RuntimeException e){
 			logger.error(e.getMessage());
 			model.addAttribute("error", ERROR_MESSAGE);
@@ -62,12 +62,12 @@ public class BaseController {
 	@RequestMapping(value = "/previouscycle", method = RequestMethod.GET)
 	public String previousCycle(ModelMap model){		
 		fillWithConstants(model);
-		model.addAttribute("previous", false);
 		try{
 			cycleManager.moveToPreviousCycle();
 			model.addAttribute("board",cycleManager.getCurrentState());
 			cycle--;
 			model.addAttribute("currentCycle",cycle);
+			model.addAttribute("previous", cycleManager.previousEnable());
 		} catch(RuntimeException e){
 			logger.error(e.getMessage());
 			model.addAttribute("error", ERROR_MESSAGE);

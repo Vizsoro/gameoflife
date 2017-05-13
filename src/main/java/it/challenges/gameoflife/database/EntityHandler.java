@@ -4,7 +4,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.springframework.core.GenericTypeResolver;
 
 
@@ -37,7 +36,7 @@ class EntityHandler<E extends GameOfLifeEntity> {
 		return entityID;
 	}
 
-	public E findById(int id) {
+	public E findById(long id) {
 		E entity = null;
 
 		Session session = factory.openSession();
@@ -45,7 +44,7 @@ class EntityHandler<E extends GameOfLifeEntity> {
 		try {
 			tx = session.beginTransaction();
 			entity = (E) session.get(typeParameterClass, id);
-		} catch (HibernateException e) {
+		} catch (HibernateException | javax.persistence.NoResultException e) {
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
@@ -55,7 +54,8 @@ class EntityHandler<E extends GameOfLifeEntity> {
 		return entity;
 	}
 
-	public void delete(int id){
+	public boolean delete(long id){
+		boolean succes;
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
@@ -63,27 +63,34 @@ class EntityHandler<E extends GameOfLifeEntity> {
 			E entity = (E) session.get(typeParameterClass, id);
 			session.delete(entity);
 			tx.commit();
-		} catch (HibernateException e) {
+			succes = true;
+		} catch (HibernateException | IllegalArgumentException e) {
+			succes = false;
 			if (tx != null)
 				tx.rollback();
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
+		return succes;
 	}
 	
-	public void update(E entity){
+	public boolean update(E entity){
+		boolean succes;
 		Session session = factory.openSession();
 	      Transaction tx = null;
 	      try{
 	         tx = session.beginTransaction();
 			 session.update(entity); 
 	         tx.commit();
+	         succes = true;
 	      }catch (HibernateException e) {
+	    	  succes = false;
 	         if (tx!=null) tx.rollback();
 	         e.printStackTrace(); 
 	      }finally {
 	         session.close(); 
 	      }
+	      return succes;
 	}
 }
