@@ -1,13 +1,12 @@
 package it.challenges.gameoflife.database;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.challenges.gameoflife.board.Board;
@@ -56,8 +55,8 @@ public class DatabaseHandler {
 	public synchronized  Map<Position, Cell> getCycle(int cycleNumber){
 		CycleEntity cycleEntity = cycleDAO.findByCycle(cycleNumber, false);
 		if(cycleEntity != null){
-			Map<Position, Cell> cellMap = new HashMap<>();
-			cycleEntity.getCellEntities().parallelStream().map(entity -> new Cell().setColor(entity.getCellColor())
+			Map<Position, Cell> cellMap = new ConcurrentHashMap<>();
+			cycleEntity.getCellEntities().stream().map(entity -> new Cell().setColor(entity.getCellColor())
 					.setPosition(new Position(entity.getPositionX(), entity.getPositionY())).setState(entity.getCellState()))
 					.forEach(c->cellMap.put(c.getPosition(), c));				
 			

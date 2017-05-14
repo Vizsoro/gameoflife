@@ -34,7 +34,7 @@ public class CycleEntity extends GameOfLifeEntity {
 	private int cycle;
 	
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<CellEntity> cellEntities;
 
 

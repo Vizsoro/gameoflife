@@ -112,4 +112,16 @@ public class DatabaseCycleManagerTest{
 		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c->c.stream()).parallel()
 				.allMatch(c->currentState.get(c.getPosition()).equals(c)));
 	}
+	
+	@Test
+	public void sizeTest(){
+		cycleManager.startGame(100, 0.5);
+		Board currentBoard = cycleManager.getBoardCopy();
+		cycleManager.moveToNextCycle();
+		cycleManager.moveToNextCycle();
+		cycleManager.moveToNextCycle();
+		cycleManager.moveToPreviousCycle();
+		cycleManager.moveToPreviousCycle();
+		assertTrue(cycleManager.getCurrentState().values().parallelStream().allMatch(l->l.size()==100));
+	}
 }

@@ -52,7 +52,7 @@ public class CycleDAOTest {
 		Map<Position, Cell> cells = boardHandler.generateBoard(5, 0.5).getCells();
 		entity.setCellEntities(cells);
 		entity.setCycle(15);
-		long id = cycleDAO.save(entity);
+		cycleDAO.save(entity);
 		CycleEntity entity2 = cycleDAO.findByCycle(15, false);
 		assertNotNull(entity2);
 		assertTrue(entity2.equals(entity));
@@ -65,6 +65,19 @@ public class CycleDAOTest {
 	@Test
 	public void notFoundTest() {
 		assertNull(cycleDAO.findByCycle(15, true));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void findByCycleSizeTest(){
+		CycleEntity entity = new CycleEntity();
+		Map<Position, Cell> cells = boardHandler.generateBoard(100, 0.5).getCells();
+		entity.setCellEntities(cells);
+		entity.setCycle(15);
+		cycleDAO.save(entity);
+		CycleEntity entity2 = cycleDAO.findByCycle(15, false);
+		assertTrue(entity2.getCellEntities().size() == 10000);
 	}
 
 }

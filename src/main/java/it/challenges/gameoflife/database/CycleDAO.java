@@ -2,6 +2,9 @@ package it.challenges.gameoflife.database;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -25,9 +28,9 @@ public class CycleDAO extends EntityHandler<CycleEntity> {
 		try {
 			tx = session.beginTransaction();
 			entity = session.createNamedQuery("CycleEntity.findByCycle", CycleEntity.class).setReadOnly(true)
-				.setParameter("cycle", cycleNum).getSingleResult();
+						.setParameter("cycle", cycleNum).getSingleResult();		
 			if(!lazy){
-				entity.getCellEntities().size();				
+				entity.getCellEntities().size();
 			}
 		} catch (HibernateException | javax.persistence.NoResultException e) {
 			if (tx != null)
