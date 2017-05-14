@@ -106,4 +106,9 @@ public class DatabaseCycleManager implements CycleManagerInterface {
 		// TODO Auto-generated method stub
 		return actualCycle -1 > 0;
 	}
+	
+	@Override
+	public Board getBoardCopy(){
+		return boardHandler.getBoard().copy();
+	}
 }

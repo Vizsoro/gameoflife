@@ -21,6 +21,7 @@ import it.challenges.gameoflife.board.Position;
 @Entity
 @NamedQueries({
 	@NamedQuery(name="CycleEntity.findByCycle", query = "select c from CycleEntity c where c.cycle = :cycle"),
+	@NamedQuery(name="CycleEntity.allCycle", query = "select c from CycleEntity c"),
 })
 public class CycleEntity extends GameOfLifeEntity {
 	

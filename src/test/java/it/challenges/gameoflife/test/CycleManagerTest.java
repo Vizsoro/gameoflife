@@ -2,11 +2,14 @@ package it.challenges.gameoflife.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
 import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.cycle.CycleManager;
@@ -90,6 +93,17 @@ public class CycleManagerTest {
 					.equals(CellState.LIVE));
 		}
 
+	}
+	
+	@Test
+	public void cycleManagementTest(){
+		cycleManager.startGame(10, 0.5);
+		Board currentBoard = cycleManager.getBoardCopy();
+		Map<Position, Cell> currentState = currentBoard.getCells();
+		cycleManager.moveToNextCycle();
+		cycleManager.moveToPreviousCycle();
+		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c->c.stream()).parallel()
+				.allMatch(c->currentState.get(c.getPosition()).equals(c)));
 	}
 
 }

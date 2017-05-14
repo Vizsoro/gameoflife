@@ -3,6 +3,7 @@ package it.challenges.gameoflife.cycle;
 import java.util.List;
 import java.util.Map;
 
+import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.Cell;
 
 public interface CycleManagerInterface {
@@ -16,5 +17,7 @@ public interface CycleManagerInterface {
 	Map<Integer, Map<Integer, Cell>> getCurrentState();
 	
 	boolean previousEnable();
+
+	Board getBoardCopy();
 
 }

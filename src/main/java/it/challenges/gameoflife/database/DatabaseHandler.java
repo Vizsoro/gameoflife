@@ -68,9 +68,6 @@ public class DatabaseHandler {
 	}
 
 	public synchronized void clearCycles() {
-		long id = 1;
-		while(cycleDAO.delete(id++)){}
-		id = 1;
-		while(cellDAO.delete(id++)){}
+		cycleDAO.clearAllCycle();
 	}
 }

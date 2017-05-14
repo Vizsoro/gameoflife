@@ -11,6 +11,7 @@ import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
+import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
 import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.board.Position;
@@ -102,12 +103,13 @@ public class DatabaseCycleManagerTest{
 	@Test
 	public void cycleManagementTest(){
 		cycleManager.startGame(10, 0.5);
-		Map<Integer, List<Cell>> currentState = cycleManager.getCurrentState();
+		Board currentBoard = cycleManager.getBoardCopy();
+		Map<Position, Cell> currentState = currentBoard.getCells();
 		cycleManager.moveToNextCycle();
-//		cycleManager.moveToNextCycle();
-//		cycleManager.moveToPreviousCycle();
+		cycleManager.moveToNextCycle();
+		cycleManager.moveToPreviousCycle();
 		cycleManager.moveToPreviousCycle();
 		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c->c.stream()).parallel()
-				.allMatch(c->currentState.get(c.getPosition().getX()).get(c.getPosition().getY()).equals(c)));
+				.allMatch(c->currentState.get(c.getPosition()).equals(c)));
 	}
 }

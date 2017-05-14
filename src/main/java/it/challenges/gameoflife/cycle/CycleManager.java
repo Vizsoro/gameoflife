@@ -83,5 +83,10 @@ public class CycleManager implements CycleManagerInterface {
 	public boolean previousEnable() {
 		return previous;
 	}
+	
+	@Override
+	public Board getBoardCopy(){
+		return boardHandler.getBoard().copy();
+	}
 
 }
