@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
 import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 import it.challenges.gameoflife.cycle.CycleManager;
 import it.challenges.gameoflife.pojo.CellState;
 import it.challenges.gameoflife.rule.RuleDeadToLive;
@@ -35,7 +34,7 @@ public class CycleManagerTest {
 	public void overPopulationTest() {
 		cycleManager.startGame(10, 0);
 		cycleManager.moveToNextCycle();
-		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.allMatch(c -> CellState.DEAD.equals(c.getState())));
 	}
 
@@ -44,32 +43,33 @@ public class CycleManagerTest {
 		cycleManager.startGame(10, 0);
 		cycleManager.moveToNextCycle();
 		cycleManager.moveToPreviousCycle();
-		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.allMatch(c -> CellState.LIVE.equals(c.getState())));
 	}
 
 	@Test
 	public void underPopulationTest() {
 		cycleManager.startGame(10, 1);
-		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.allMatch(c -> CellState.DEAD.equals(c.getState())));
 		cycleManager.moveToNextCycle();
-		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.allMatch(c -> CellState.DEAD.equals(c.getState())));
 	}
 
 	@Test
 	public void liveToLiveTest() {
 		cycleManager.startGame(10, 0.5);
-		Optional<Cell> liveCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		Optional<Cell> liveCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.filter(c -> CellState.LIVE.equals(c.getState())
 						&& (c.getLivingNeighbours() == 2 || c.getLivingNeighbours() == 3))
 				.findAny();
 
 		if (liveCell.isPresent()) {
 			cycleManager.moveToNextCycle();
-			Position livePos = liveCell.get().getPosition();
-			assertTrue(cycleManager.getCurrentState().get(livePos.getX()).get(livePos.getY()).getState()
+			int x = liveCell.get().getPosX();
+			int y = liveCell.get().getPosY();
+			assertTrue(cycleManager.getCurrentState().get(x).get(y).getState()
 					.equals(CellState.LIVE));
 		}
 
@@ -78,15 +78,16 @@ public class CycleManagerTest {
 	@Test
 	public void deadToLiveTest() {
 		cycleManager.startGame(10, 0.5);
-		Optional<Cell> liveCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		Optional<Cell> liveCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.values().stream())
 				.filter(c -> CellState.DEAD.equals(c.getState())
 						&& c.getLivingNeighbours() == 3)
 				.findAny();
 
 		if (liveCell.isPresent()) {
 			cycleManager.moveToNextCycle();
-			Position livePos = liveCell.get().getPosition();
-			assertTrue(cycleManager.getCurrentState().get(livePos.getX()).get(livePos.getY()).getState()
+			int x = liveCell.get().getPosX();
+			int y = liveCell.get().getPosY();
+			assertTrue(cycleManager.getCurrentState().get(x).get(y).getState()
 					.equals(CellState.LIVE));
 		}
 

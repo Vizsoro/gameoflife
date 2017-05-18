@@ -37,12 +37,12 @@ public class CycleManager implements CycleManagerInterface {
 	}
 
 	private void fillNeighbourInfo(final Board board) {
-		board.getCells().values().parallelStream()
+		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
 				.forEach(boardHandler::setNeighbourInfo);
 	}
 
 	private void calculateCycle(final Board board) {
-		board.getCells().values().parallelStream()
+		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
 				.forEach(CycleManager.this::applyRules);
 	}
 
@@ -60,10 +60,8 @@ public class CycleManager implements CycleManagerInterface {
 	}
 
 	@Override
-	public Map<Integer, List<Cell>> getCurrentState() {
-		Map<Integer, List<Cell>> collection = boardHandler.getBoard().getCells().values().parallelStream().collect(Collectors.groupingBy((Cell c)->{return c.getPosition().getX();}));
-		collection.forEach((k,v)->Collections.sort(v, (c1,c2)->c1.getPosition().getY() - c2.getPosition().getY()));
-		return collection;
+	public Map<Integer, Map<Integer, Cell>> getCurrentState() {
+		return boardHandler.getBoard().getCells();
 	}
 
 	@Override

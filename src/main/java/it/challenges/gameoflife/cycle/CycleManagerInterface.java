@@ -13,6 +13,6 @@ public interface CycleManagerInterface {
 	
 	void moveToPreviousCycle();
 	
-	Map<Integer, List<Cell>> getCurrentState();
+	Map<Integer, Map<Integer, Cell>> getCurrentState();
 
 }

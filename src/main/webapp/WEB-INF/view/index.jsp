@@ -53,12 +53,12 @@
 				<table>
 					<c:forEach items="${board}" var="row">
 						<tr>
-							<c:forEach items="${row.value }" var="cell">
+							<c:forEach items="${row.value }" var="entry">
 								<td
 									class='<c:choose>
-									<c:when test="${cell.state eq 'LIVE'}">
+									<c:when test="${entry.value.state eq 'LIVE'}">
 										<c:choose>
-											<c:when test="${cell.color eq 'GREEN'}">
+											<c:when test="${entry.value.color eq 'GREEN'}">
 												live-green
 											</c:when>
 											<c:otherwise>

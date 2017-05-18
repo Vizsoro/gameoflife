@@ -11,7 +11,7 @@ public interface BoardHandler {
 
 	void setNeighbourInfo(Cell cell);
 	
-	List<Cell> getNeighbours(Position position);
+	List<Cell> getNeighbours(int x, int y);
 	
 	Board generateBoard(int size, double probability);
 
@@ -19,5 +19,5 @@ public interface BoardHandler {
 	
 	Board getBoard();
 	
-	NeighbourInfo findNeighbourInfo(Position position);
+	NeighbourInfo findNeighbourInfo(int x, int y);
 }

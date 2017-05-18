@@ -2,9 +2,9 @@ package it.challenges.gameoflife.board;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Component;
 
@@ -18,12 +18,12 @@ public class BoardHandlerImplementation implements BoardHandler {
 	private Board previousBoard;
 
 	@Override
-	public NeighbourInfo findNeighbourInfo(Position position) {
+	public NeighbourInfo findNeighbourInfo(int x, int y) {
 		NeighbourInfo info = new NeighbourInfo();
 		int livingNeighbour = 0;
 		int blue = 0;
 		int green = 0;
-		List<Cell> neighbours = getNeighbours(position);
+		List<Cell> neighbours = getNeighbours(x,y);
 		for (Cell neighbour : neighbours) {
 			if (CellState.LIVE.equals(neighbour.getState())) {
 				livingNeighbour++;
@@ -40,38 +40,38 @@ public class BoardHandlerImplementation implements BoardHandler {
 	}
 
 	@Override
-	public List<Cell> getNeighbours(Position position) {
+	public List<Cell> getNeighbours(int x, int y) {
 		List<Cell> neighbours = new ArrayList<Cell>();
-		Map<Position,Cell> cells = board.getCells();
-		int column = position.getY();
-		int row = position.getX();
+		Map<Integer, Map<Integer, Cell>> cells = board.getCells();
 		int max = board.getBoardSize() - 1;
-		int nextColumn = column == max ? 0 : column + 1;
-		int previousColumn = column == 0 ? max : column - 1;
-		int nextRow = row == max ? 0 : row + 1;
-		int previousRow = row == 0 ? max : row - 1;
-		neighbours.add(cells.get(new Position(row,nextColumn))); 
-		neighbours.add(cells.get(new Position(row,previousColumn)));
-		neighbours.add(cells.get(new Position(previousRow,nextColumn)));
-		neighbours.add(cells.get(new Position(previousRow,column)));
-		neighbours.add(cells.get(new Position(previousRow,previousColumn)));
-		neighbours.add(cells.get(new Position(nextRow,nextColumn)));
-		neighbours.add(cells.get(new Position(nextRow,column)));
-		neighbours.add(cells.get(new Position(nextRow,previousColumn)));
+		int nextColumn = y == max ? 0 : y + 1;
+		int previousColumn = y == 0 ? max : y - 1;
+		int nextRow = x == max ? 0 : x + 1;
+		int previousRow = x == 0 ? max : x - 1;
+		neighbours.add(cells.get(x).get(nextColumn));
+		neighbours.add(cells.get(x).get(previousColumn));
+		neighbours.add(cells.get(previousRow).get(nextColumn));
+		neighbours.add(cells.get(previousRow).get(y));
+		neighbours.add(cells.get(previousRow).get(previousColumn));
+		neighbours.add(cells.get(nextRow).get(nextColumn));
+		neighbours.add(cells.get(nextRow).get(y));
+		neighbours.add(cells.get(nextRow).get(previousColumn));
 		return Collections.unmodifiableList(neighbours);
 	}
 
 	@Override
 	public Board generateBoard(int size, double probability) {
-		Map<Position,Cell> board = new HashMap<>(size);
-		for (int i = 0; i < size; i++) {			
+		Map<Integer ,Map<Integer, Cell>> board = new TreeMap<>();
+		for (int i = 0; i < size; i++) {
+			Map<Integer, Cell> row = new TreeMap<>();
 			for (int j = 0; j < size; j++) {
 				Cell cell = new Cell();
-				cell.setPosition(new Position(i, j));
+				cell.setPosX(i).setPosY(j);
 				cell.setState(Math.random() >= probability ? CellState.LIVE : CellState.DEAD);
 				cell.setColor(Math.random() > 0.5 ? CellColor.BLUE : CellColor.GREEN);
-				board.put(cell.getPosition(), cell);
-			}			
+				row.put(j, cell);
+			}	
+			board.put(i, row);
 		}
 		return new Board(board);
 	}
@@ -89,7 +89,7 @@ public class BoardHandlerImplementation implements BoardHandler {
 
 	@Override
 	public void setNeighbourInfo(Cell cell) {
-		cell.setNeighbourInfo(findNeighbourInfo(cell.getPosition()));
+		cell.setNeighbourInfo(findNeighbourInfo(cell.getPosX(),cell.getPosY()));
 
 	}
 
