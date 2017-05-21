@@ -56,7 +56,7 @@ public class BoardHandlerImplementation implements BoardHandler {
 		neighbours.add(cells.get(nextRow).get(nextColumn));
 		neighbours.add(cells.get(nextRow).get(y));
 		neighbours.add(cells.get(nextRow).get(previousColumn));
-		return Collections.unmodifiableList(neighbours);
+		return neighbours;
 	}
 
 	@Override

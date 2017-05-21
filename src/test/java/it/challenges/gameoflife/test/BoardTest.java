@@ -49,7 +49,8 @@ public class BoardTest {
 		Board board = new Board(cells);
 		Board board2 = board.copy();
 		assertFalse(board.equals(board2));
-		assertFalse(board2.getCells().get(0).get(0).equals(cell));
+		assertTrue(board2.getCells().get(0).get(0).equals(cell));
+		assertFalse(board2.getCells().get(0).get(0) == cell);
 	}
 
 	@Test

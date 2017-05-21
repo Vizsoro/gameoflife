@@ -72,5 +72,37 @@ public class Cell {
 		return this;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((color == null) ? 0 : color.hashCode());
+		result = prime * result + posX;
+		result = prime * result + posY;
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cell other = (Cell) obj;
+		if (color != other.color)
+			return false;
+		if (posX != other.posX)
+			return false;
+		if (posY != other.posY)
+			return false;
+		if (state != other.state)
+			return false;
+		return true;
+	}
+
+	
 	
 }

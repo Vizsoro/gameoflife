@@ -35,8 +35,8 @@ public class CellEntity extends GameOfLifeEntity {
 	}
 	
 	public CellEntity(Cell cell){
-		this.positionX = cell.getPosition().getX();
-		this.positionY = cell.getPosition().getY();
+		this.positionX = cell.getPosX();
+		this.positionY = cell.getPosY();
 		this.cellState = cell.getState();
 		this.cellColor = cell.getColor();
 	}

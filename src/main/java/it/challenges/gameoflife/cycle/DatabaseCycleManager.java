@@ -1,10 +1,7 @@
 package it.challenges.gameoflife.cycle;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,7 +9,6 @@ import org.springframework.stereotype.Component;
 import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 import it.challenges.gameoflife.database.DatabaseHandler;
 import it.challenges.gameoflife.rule.Rule;
 import it.challenges.gameoflife.rule.RuleFactory;
@@ -46,7 +42,7 @@ public class DatabaseCycleManager implements CycleManagerInterface {
 			databaseHandler.saveCycle(actualCycle, board);
 		} else if(actualCycle < maxCycle && actualCycle > 0) {
 			++actualCycle;
-			Map<Position, Cell> cycle = databaseHandler.getCycle(actualCycle);
+			Map<Integer,Map<Integer,Cell>> cycle = databaseHandler.getCycle(actualCycle);
 			boardHandler.saveBoard(new Board(cycle));			
 		} else {
 			throw new IllegalStateException(ILLEGAL_ACTUALCYCLE);
@@ -56,12 +52,12 @@ public class DatabaseCycleManager implements CycleManagerInterface {
 	}
 
 	private void fillNeighbourInfo(final Board board) {
-		board.getCells().values().parallelStream()
+		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
 				.forEach(boardHandler::setNeighbourInfo);
 	}
 
 	private void calculateCycle(final Board board) {
-		board.getCells().values().parallelStream()
+		board.getCells().values().parallelStream().flatMap(map->map.values().stream())
 				.forEach(DatabaseCycleManager.this::applyRules);
 	}
 
@@ -80,10 +76,8 @@ public class DatabaseCycleManager implements CycleManagerInterface {
 	}
 
 	@Override
-	public Map<Integer, List<Cell>> getCurrentState() {
-		Map<Integer, List<Cell>> collection = boardHandler.getBoard().getCells().values().parallelStream().collect(Collectors.groupingBy((Cell c)->{return c.getPosition().getX();}));
-		collection.forEach((k,v)->Collections.sort(v, (c1,c2)->c1.getPosition().getY() - c2.getPosition().getY()));
-		return collection;
+	public Map<Integer, Map<Integer, Cell>> getCurrentState() {
+		return boardHandler.getBoard().getCells();
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class CycleManagerTest {
 	@Test
 	public void deadToLiveTest() {
 		cycleManager.startGame(10, 0.5);
-		Optional<Cell> deadCell = cycleManager.getCurrentState().values().stream().flatMap(c -> c.stream())
+		Optional<Cell> deadCell = cycleManager.getCurrentState().values().stream().flatMap(map -> map.values().stream())
 				.filter(c -> CellState.DEAD.equals(c.getState())
 						&& c.getLivingNeighbours() == 3)
 				.findAny();
@@ -96,13 +96,15 @@ public class CycleManagerTest {
 	
 	@Test
 	public void cycleManagementTest(){
-		cycleManager.startGame(10, 0.5);
+		cycleManager.startGame(2, 0.5);
 		Board currentBoard = cycleManager.getBoardCopy();
-		Map<Position, Cell> currentState = currentBoard.getCells();
+		Map<Integer,Map<Integer,Cell>> currentState = currentBoard.getCells();
 		cycleManager.moveToNextCycle();
 		cycleManager.moveToPreviousCycle();
-		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c->c.stream()).parallel()
-				.allMatch(c->currentState.get(c.getPosition()).equals(c)));
+		assertTrue(cycleManager
+				.getCurrentState().values().parallelStream()
+				.flatMap(map->map.values().stream())
+				.allMatch(c->currentState.get(c.getPosX()).get(c.getPosY()).equals(c)));
 	}
 
 }

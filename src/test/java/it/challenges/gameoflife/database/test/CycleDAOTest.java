@@ -1,12 +1,14 @@
 package it.challenges.gameoflife.database.test;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.swing.text.Position;
 import javax.transaction.Transactional;
 
 import org.hibernate.cfg.Configuration;
@@ -17,7 +19,6 @@ import org.springframework.test.annotation.Rollback;
 import it.challenges.gameoflife.board.BoardHandler;
 import it.challenges.gameoflife.board.BoardHandlerImplementation;
 import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 import it.challenges.gameoflife.database.CellEntity;
 import it.challenges.gameoflife.database.CycleDAO;
 import it.challenges.gameoflife.database.CycleEntity;
@@ -49,7 +50,7 @@ public class CycleDAOTest {
 	@Rollback(true)
 	public void findByCycleIntTest() {
 		CycleEntity entity = new CycleEntity();
-		Map<Position, Cell> cells = boardHandler.generateBoard(5, 0.5).getCells();
+		Map<Integer,Map<Integer,Cell>> cells = boardHandler.generateBoard(5, 0.5).getCells();
 		entity.setCellEntities(cells);
 		entity.setCycle(15);
 		cycleDAO.save(entity);
@@ -59,7 +60,7 @@ public class CycleDAOTest {
 		Optional<CellEntity> savedCell = entity2.getCellEntities().stream()
 				.filter(e -> e.getPositionX() == 0 && e.getPositionY() == 0).findFirst();
 		assertTrue(savedCell.isPresent());
-		assertTrue(savedCell.get().equals(new CellEntity(cells.get(new Position(0,0)))));
+		assertTrue(savedCell.get().equals(new CellEntity(cells.get(0).get(0))));
 	}
 	
 	@Test
@@ -72,7 +73,7 @@ public class CycleDAOTest {
 	@Rollback(true)
 	public void findByCycleSizeTest(){
 		CycleEntity entity = new CycleEntity();
-		Map<Position, Cell> cells = boardHandler.generateBoard(100, 0.5).getCells();
+		Map<Integer,Map<Integer,Cell>> cells = boardHandler.generateBoard(100, 0.5).getCells();
 		entity.setCellEntities(cells);
 		entity.setCycle(15);
 		cycleDAO.save(entity);

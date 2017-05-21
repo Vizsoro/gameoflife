@@ -7,16 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.swing.text.Position;
 
 import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 
 @Entity
 @NamedQueries({
@@ -69,8 +68,8 @@ public class CycleEntity extends GameOfLifeEntity {
 		return this;
 	}
 	
-	public CycleEntity setCellEntities(Map<Position, Cell> cellMap){
-		this.cellEntities = cellMap.values().parallelStream().map(CellEntity::new).collect(Collectors.toList());
+	public CycleEntity setCellEntities(Map<Integer, Map<Integer, Cell>> cellMap){
+		this.cellEntities = cellMap.values().parallelStream().flatMap(map->map.values().stream()).map(CellEntity::new).collect(Collectors.toList());
 		return this;
 	}
 

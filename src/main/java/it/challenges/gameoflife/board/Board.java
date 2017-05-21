@@ -3,7 +3,6 @@ package it.challenges.gameoflife.board;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.NavigableMap;
 import java.util.TreeMap;
 
 public class Board {

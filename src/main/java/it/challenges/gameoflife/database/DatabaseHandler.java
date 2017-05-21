@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import it.challenges.gameoflife.board.Board;
 import it.challenges.gameoflife.board.Cell;
-import it.challenges.gameoflife.board.Position;
 
 @Service
 public class DatabaseHandler {
@@ -46,20 +45,20 @@ public class DatabaseHandler {
 	}
 
 	public synchronized long saveCycle(int cycle, Board board) {
-		List<CellEntity> cellEntities = board.getCells().values().parallelStream().map(CellEntity::new)
+		List<CellEntity> cellEntities = board.getCells().values().parallelStream().flatMap(map->map.values().stream()).map(CellEntity::new)
 				.collect(Collectors.toList());
 		CycleEntity cycleEntity = new CycleEntity().setCellEntities(cellEntities).setCycle(cycle);
 		return cycleDAO.save(cycleEntity);
 	}
 
-	public synchronized  Map<Position, Cell> getCycle(int cycleNumber){
+	public synchronized  Map<Integer,Map<Integer,Cell>> getCycle(int cycleNumber){
 		CycleEntity cycleEntity = cycleDAO.findByCycle(cycleNumber, false);
 		if(cycleEntity != null){
-			Map<Position, Cell> cellMap = new ConcurrentHashMap<>();
-			cycleEntity.getCellEntities().stream().map(entity -> new Cell().setColor(entity.getCellColor())
-					.setPosition(new Position(entity.getPositionX(), entity.getPositionY())).setState(entity.getCellState()))
-					.forEach(c->cellMap.put(c.getPosition(), c));				
-			
+			Map<Integer,Map<Integer,Cell>> cellMap = new ConcurrentHashMap<>();
+//			cycleEntity.getCellEntities().stream().map(entity -> new Cell().setColor(entity.getCellColor())
+//					.setPosition(new Position(entity.getPositionX(), entity.getPositionY())).setState(entity.getCellState()))
+//					.forEach(c->cellMap.put(c.getPosition(), c));				
+//			
 			return cellMap;
 		} else {
 			return null;

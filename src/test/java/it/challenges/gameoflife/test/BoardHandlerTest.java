@@ -61,7 +61,7 @@ public class BoardHandlerTest {
 	@Test
 	public void livingNeighbourTest(){
 		boardHandler.saveBoard(boardHandler.generateBoard(4, 0));
-		NeighbourInfo info = boardHandler.findNeighbourInfo(new Position(0,0));
+		NeighbourInfo info = boardHandler.findNeighbourInfo(0,0);
 		assertTrue(info.getLivingNeighbour() == 8);
 		
 	}
