@@ -5,12 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import it.challenges.gameoflife.board.Cell;
 import it.challenges.gameoflife.pojo.CellColor;
 import it.challenges.gameoflife.pojo.CellState;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(name="CellEntity.findByCycle", query = "select c from CellEntity c where c.cycle = :cycle"),
+	@NamedQuery(name="CellEntity.deleteAllCell", query = "delete CellEntity")
+})
 public class CellEntity extends GameOfLifeEntity {
 
 	@Id
@@ -29,6 +35,9 @@ public class CellEntity extends GameOfLifeEntity {
 	
 	@Column
 	private CellColor cellColor;
+	
+	@Column
+	private int cycle;
 	
 	public CellEntity(){
 		
@@ -84,6 +93,14 @@ public class CellEntity extends GameOfLifeEntity {
 	public CellEntity setCellColor(CellColor cellColor) {
 		this.cellColor = cellColor;
 		return this;
+	}
+
+	public int getCycle() {
+		return cycle;
+	}
+
+	public void setCycle(int cycle) {
+		this.cycle = cycle;
 	}
 
 	@Override

@@ -6,8 +6,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.swing.text.Position;
-
 import org.hibernate.cfg.Configuration;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,8 +106,8 @@ public class DatabaseCycleManagerTest{
 		Board currentBoard = cycleManager.getBoardCopy();
 		Map<Integer,Map<Integer,Cell>> currentState = currentBoard.getCells();
 		cycleManager.moveToNextCycle();
-		cycleManager.moveToNextCycle();
-		cycleManager.moveToPreviousCycle();
+//		cycleManager.moveToNextCycle();
+//		cycleManager.moveToPreviousCycle();
 		cycleManager.moveToPreviousCycle();
 		assertTrue(cycleManager.getCurrentState().values().stream().flatMap(c->c.values().stream()).parallel()
 				.allMatch(c->currentState.get(c.getPosX()).get(c.getPosY()).equals(c)));
@@ -119,9 +117,7 @@ public class DatabaseCycleManagerTest{
 	public void sizeTest(){
 		cycleManager.startGame(100, 0.5);
 		cycleManager.moveToNextCycle();
-		cycleManager.moveToNextCycle();
-		cycleManager.moveToNextCycle();
-		cycleManager.moveToPreviousCycle();
+		cycleManager.moveToNextCycle();;
 		cycleManager.moveToPreviousCycle();
 		assertTrue(cycleManager.getCurrentState().values().parallelStream().allMatch(l->l.size()==100));
 	}

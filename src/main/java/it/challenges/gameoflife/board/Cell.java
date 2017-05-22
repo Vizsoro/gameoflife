@@ -15,6 +15,8 @@ public class Cell {
 	}
 	
 	public Cell(Cell cell){
+		this.posX = cell.posX;
+		this.posY = cell.posY;
 		this.state = cell.state;
 		this.color = cell.color;
 		
@@ -102,6 +104,13 @@ public class Cell {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Cell [state=" + state + ", color=" + color + ", posX=" + posX + ", posY=" + posY + "]";
+	}
+	
+	
 
 	
 	

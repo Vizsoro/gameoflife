@@ -24,6 +24,5 @@
    </property>
 
    <mapping class="it.challenges.gameoflife.database.CellEntity"/>
-   <mapping class="it.challenges.gameoflife.database.CycleEntity"/>
 </session-factory>
 </hibernate-configuration>

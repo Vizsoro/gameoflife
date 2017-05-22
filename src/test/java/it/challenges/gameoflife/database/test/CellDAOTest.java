@@ -73,4 +73,16 @@ public class CellDAOTest {
 		assertTrue(entity2.equals(entity));
 	}
 
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void deleteAllTest() {
+		CellEntity entity = new CellEntity().setCellColor(CellColor.BLUE)
+				.setCellState(CellState.DEAD).setPositionX(1).setPositionY(1);
+		long id = cellDAO.save(entity);
+		cellDAO.clearAllCells();
+		assertNull(cellDAO.findById(id));		
+		
+	}
+	
 }

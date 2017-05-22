@@ -24,7 +24,7 @@ public class Board {
 	}
 	
 	public Map<Integer ,Map<Integer, Cell>> getCells() {
-		return Collections.unmodifiableMap(cells);
+		return cells;
 	}
 
 	public int getBoardSize() {

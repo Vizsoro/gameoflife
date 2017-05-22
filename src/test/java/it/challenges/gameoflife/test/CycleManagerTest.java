@@ -96,13 +96,13 @@ public class CycleManagerTest {
 	
 	@Test
 	public void cycleManagementTest(){
-		cycleManager.startGame(2, 0.5);
+		int size = 2;
+		cycleManager.startGame(size, 0.5);
 		Board currentBoard = cycleManager.getBoardCopy();
 		Map<Integer,Map<Integer,Cell>> currentState = currentBoard.getCells();
 		cycleManager.moveToNextCycle();
 		cycleManager.moveToPreviousCycle();
-		assertTrue(cycleManager
-				.getCurrentState().values().parallelStream()
+		assertTrue(cycleManager.getCurrentState().values().stream()
 				.flatMap(map->map.values().stream())
 				.allMatch(c->currentState.get(c.getPosX()).get(c.getPosY()).equals(c)));
 	}
